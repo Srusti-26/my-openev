@@ -27,3 +27,4 @@ dependencies = [
 
 [project.scripts]
 server = "server.app:main"
+openenv = "scripts.validate:main"
