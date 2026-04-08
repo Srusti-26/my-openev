@@ -182,3 +182,23 @@ runtime:
   env_vars:
     - HF_TOKEN
     - HF_API_TOKEN        # required for HuggingFace Inference API
+
+# -------------------------------------------------------------------------
+# Deployment modes (required for multi-mode deployment)
+# -------------------------------------------------------------------------
+deployment:
+  modes:
+    - name: local
+      description: Run locally with Python
+      entry: server:app
+      command: uvicorn server:app --host 0.0.0.0 --port 7860
+
+    - name: docker
+      description: Run via Docker container
+      dockerfile: Dockerfile
+      port: 7860
+
+    - name: huggingface
+      description: Deploy on Hugging Face Spaces
+      space_sdk: docker
+      port: 7860
