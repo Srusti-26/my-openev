@@ -156,7 +156,7 @@ app.add_middleware(
 async def health():
     """Health check endpoint."""
     return {
-        "status": "ok",
+        "status": "healthy",
         "dataset_loaded": len(dataset) > 0,
         "env_initialized": env is not None,
     }
