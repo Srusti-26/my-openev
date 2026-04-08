@@ -1,0 +1,184 @@
+# openenv.yaml — OpenEnv-compatible environment configuration
+# for Email Triage and Auto-Response System
+
+name: email_triage_env
+version: "1.0.0"
+description: >
+  A multi-difficulty reinforcement learning environment for email triage.
+  The agent classifies, responds to, and escalates emails across three
+  difficulty levels (easy, medium, hard), with deterministic reward grading.
+
+author: "AI Systems Engineer"
+license: MIT
+
+# -------------------------------------------------------------------------
+# Environment entry-point
+# -------------------------------------------------------------------------
+env:
+  module: env.email_env
+  class:  EmailTriageEnv
+  kwargs:
+    seed:      42
+    max_steps: 5
+
+# -------------------------------------------------------------------------
+# Observation space schema
+# -------------------------------------------------------------------------
+observation_space:
+  type: Dict
+  fields:
+    email_id:
+      type: Text
+      max_length: 64
+    sender:
+      type: Text
+      max_length: 256
+    subject:
+      type: Text
+      max_length: 512
+    body:
+      type: Text
+      max_length: 8192
+    thread_history:
+      type: Text       # JSON-serialised list of previous messages
+      max_length: 16384
+    metadata:
+      type: Text       # JSON-serialised dict with is_vip, pii_fields, etc.
+      max_length: 1024
+    step_count:
+      type: Box
+      shape: []
+      dtype: int32
+      low: 0
+      high: 100
+
+# -------------------------------------------------------------------------
+# Action space schema
+# -------------------------------------------------------------------------
+action_space:
+  type: Dict
+  fields:
+    action_id:
+      type:    Discrete
+      n:       5
+      labels:
+        0: classify_spam
+        1: classify_urgent
+        2: classify_normal
+        3: reply
+        4: escalate
+    reply_text:
+      type: Text
+      max_length: 4096
+
+# -------------------------------------------------------------------------
+# Tasks
+# -------------------------------------------------------------------------
+tasks:
+  - id:         easy
+    name:       Easy — Email Classification
+    module:     tasks.easy_task
+    class:      EasyTask
+    difficulty: easy
+    max_steps:  1
+    description: >
+      Agent must classify each email as spam, urgent, or normal.
+      Single-step episode. Binary reward (1.0 correct / 0.0 wrong).
+
+  - id:         medium
+    name:       Medium — Classification + Reply Generation
+    module:     tasks.medium_task
+    class:      MediumTask
+    difficulty: medium
+    max_steps:  2
+    description: >
+      Two-step episode: (1) classify email, (2) generate a reply.
+      Reward split: 40 % classification, 60 % reply quality.
+      Spam emails terminate after step 1 (replying to spam is unsafe).
+
+  - id:         hard
+    name:       Hard — Multi-step Reasoning with Context
+    module:     tasks.hard_task
+    class:      HardTask
+    difficulty: hard
+    max_steps:  3
+    description: >
+      Three-step episode: (1) classify, (2) decide action (reply/escalate),
+      (3) compose reply or escalation memo.
+      Reward split: 20 % classification, 20 % action decision, 60 % output
+      quality (keyword 30 %, safety 15 %, tone 15 %).
+      Thread history, VIP status, and PII metadata influence correct actions.
+
+# -------------------------------------------------------------------------
+# Graders
+# -------------------------------------------------------------------------
+graders:
+  - id:     classification
+    module: graders.classification_grader
+    class:  ClassificationGrader
+    type:   accuracy
+    description: >
+      Deterministic label-match grader. Maps action_id to label string
+      and compares against ground_truth.label. No partial credit.
+
+  - id:     reply
+    module: graders.reply_grader
+    class:  ReplyGrader
+    type:   keyword_similarity
+    description: >
+      Weighted keyword + relevance + length grader.
+      Keyword match: 70 %, relevance to body: 20 %, length heuristic: 10 %.
+      All deterministic regex/string operations.
+
+  - id:     safety
+    module: graders.safety_grader
+    class:  SafetyGrader
+    type:   rule_based
+    description: >
+      Checks generated replies for PII leakage (SSN, credit card, phone,
+      password) and unsafe language patterns. Penalises 0.5 per PII field
+      leaked and 0.3 for unsafe phrases. Deterministic regex.
+
+# -------------------------------------------------------------------------
+# Dataset
+# -------------------------------------------------------------------------
+dataset:
+  path:   data/emails.json
+  loader: data.loader.load_emails
+  size:   15
+  splits:
+    train: 0.8
+    eval:  0.2
+  properties:
+    - realistic_noise         # typos, informal tone, ambiguity
+    - label_distribution:
+        spam:   4
+        urgent: 5
+        normal: 6
+    - thread_emails: 3        # emails with thread_history
+    - vip_emails: 3
+    - pii_emails: 3
+
+# -------------------------------------------------------------------------
+# Reward configuration
+# -------------------------------------------------------------------------
+reward:
+  range: [0.0, 1.0]
+  penalties:
+    out_of_scope_action:  -0.10
+    reply_to_spam:        -0.15
+    pii_leak_per_field:   -0.50
+    unsafe_language:      -0.30
+  partial_credit: true
+  deterministic:  true
+
+# -------------------------------------------------------------------------
+# Runtime
+# -------------------------------------------------------------------------
+runtime:
+  python:     ">=3.10"
+  entry:      server:app
+  dockerfile: Dockerfile
+  env_vars:
+    - HF_TOKEN
+    - HF_API_TOKEN        # required for HuggingFace Inference API

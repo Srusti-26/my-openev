@@ -1,0 +1,219 @@
+[
+  {
+    "id": "email_001",
+    "sender": "noreply@offers-limited.xyz",
+    "subject": "You WON!!! Cliam ur prize 🎁🎁",
+    "body": "Congrtulations!! ur among the selcted few winnrs of our excluive raffle. Click here immediately to cliam ur $5000 gift card b4 it expires tonite. Act NOW!!!",
+    "thread_history": [],
+    "metadata": {"has_attachment": false, "is_vip": false, "pii_fields": []},
+    "ground_truth": {
+      "label": "spam",
+      "action": "none",
+      "reply_keywords": [],
+      "notes": "Classic phishing/spam with typos and urgency scarcity tactics"
+    }
+  },
+  {
+    "id": "email_002",
+    "sender": "alice.chen@acmecorp.com",
+    "subject": "Production DB is down — customers cannot checkout",
+    "body": "Hi team, our production database went down at 14:32 UTC. Customers are unable to complete purchases. Error logs show connection pool exhausted. We need this fixed ASAP — every minute is costing us roughly $2k in lost sales. On-call engineer is not picking up. Please escalate immediately.",
+    "thread_history": [],
+    "metadata": {"has_attachment": true, "is_vip": true, "pii_fields": []},
+    "ground_truth": {
+      "label": "urgent",
+      "action": "escalate",
+      "reply_keywords": ["escalate", "acknowledged", "engineer", "investigating", "ETA"],
+      "notes": "Critical incident requiring immediate escalation"
+    }
+  },
+  {
+    "id": "email_003",
+    "sender": "bob.smith@partner.org",
+    "subject": "Q3 report — feedback needed by Friday",
+    "body": "Hey, hope you're doing well. I've attached the Q3 performance report we discussed last week. Could you take a look and send back any feedback before Friday EOD? No rush if you're busy, just let me know if the timeline doesn't work. Thanks!",
+    "thread_history": [],
+    "metadata": {"has_attachment": true, "is_vip": false, "pii_fields": []},
+    "ground_truth": {
+      "label": "normal",
+      "action": "reply",
+      "reply_keywords": ["feedback", "Friday", "received", "review", "will"],
+      "notes": "Standard business communication, polite and low urgency"
+    }
+  },
+  {
+    "id": "email_004",
+    "sender": "j.doe@bigclient.com",
+    "subject": "RE: RE: RE: RE: Invoice dispute #4421",
+    "body": "This is the FOURTH time I'm writing about this. Invoice #4421 shows a $3,200 charge for services we never received. I was told it would be resolved 3 weeks ago. If I don't hear back today I will have no choice but to involve our legal team.",
+    "thread_history": [
+      {"sender": "j.doe@bigclient.com", "subject": "Invoice dispute #4421", "snippet": "Hi, I noticed an error on invoice #4421..."},
+      {"sender": "support@ourcompany.com", "subject": "RE: Invoice dispute #4421", "snippet": "Thank you for reaching out, we are looking into this..."},
+      {"sender": "j.doe@bigclient.com", "subject": "RE: RE: Invoice dispute #4421", "snippet": "It's been a week, any update?"},
+      {"sender": "j.doe@bigclient.com", "subject": "RE: RE: RE: Invoice dispute #4421", "snippet": "Still waiting for a response..."}
+    ],
+    "metadata": {"has_attachment": false, "is_vip": true, "pii_fields": []},
+    "ground_truth": {
+      "label": "urgent",
+      "action": "escalate",
+      "reply_keywords": ["apologise", "priority", "escalated", "billing team", "resolve", "48 hours"],
+      "notes": "VIP client with repeated unresolved issue — escalation is the correct action"
+    }
+  },
+  {
+    "id": "email_005",
+    "sender": "newsletter@techdigest.io",
+    "subject": "Your weekly tech digest 📰 — AI, cloud, security",
+    "body": "This week in tech: OpenAI announces new model tier. AWS re:Invent preview. Top 10 VS Code extensions for 2024. Click below to read full stories. Unsubscribe | Manage preferences.",
+    "thread_history": [],
+    "metadata": {"has_attachment": false, "is_vip": false, "pii_fields": []},
+    "ground_truth": {
+      "label": "spam",
+      "action": "none",
+      "reply_keywords": [],
+      "notes": "Legitimate newsletter but still unsolicited bulk mail — classify as spam"
+    }
+  },
+  {
+    "id": "email_006",
+    "sender": "priya.k@internalteam.com",
+    "subject": "can u check the staging deploy??",
+    "body": "hey, deployed the new feature to staging like 20 mins ago but the tests r failing. think its the env variables again lol. can u take a look when u get a chance? no rush but kinda blockin me",
+    "thread_history": [],
+    "metadata": {"has_attachment": false, "is_vip": false, "pii_fields": []},
+    "ground_truth": {
+      "label": "normal",
+      "action": "reply",
+      "reply_keywords": ["staging", "check", "environment", "variables", "look into", "shortly"],
+      "notes": "Informal internal message with typos — normal priority, reply needed"
+    }
+  },
+  {
+    "id": "email_007",
+    "sender": "ceo@bigfund.vc",
+    "subject": "Partnership opportunity — urgent response needed",
+    "body": "Dear team, I represent a major venture fund interested in a strategic partnership with your company. We have $50M allocated for Q4 deployment. Please have your BD lead contact me at the number below before COB today as we have another meeting scheduled tomorrow. This opportunity will not wait.",
+    "thread_history": [],
+    "metadata": {"has_attachment": false, "is_vip": false, "pii_fields": []},
+    "ground_truth": {
+      "label": "urgent",
+      "action": "escalate",
+      "reply_keywords": ["thank you", "forwarded", "team", "respond", "shortly"],
+      "notes": "High-value inbound — urgent but requires escalation to BD/leadership, not a direct reply"
+    }
+  },
+  {
+    "id": "email_008",
+    "sender": "hr@ourcompany.com",
+    "subject": "Action required: Complete benefits enrollment by Dec 1",
+    "body": "Hi, this is a reminder that your annual benefits enrollment window closes December 1st. Please log in to the HR portal and make your selections. If you have questions, contact benefits@ourcompany.com. Note: failure to enroll will result in default plan assignment.",
+    "thread_history": [],
+    "metadata": {"has_attachment": false, "is_vip": false, "pii_fields": ["SSN"]},
+    "ground_truth": {
+      "label": "normal",
+      "action": "reply",
+      "reply_keywords": ["acknowledged", "enrollment", "portal", "December", "complete"],
+      "notes": "Internal HR comms — normal priority, reply to confirm receipt"
+    }
+  },
+  {
+    "id": "email_009",
+    "sender": "security-alerts@bankofamerica.phishsite.ru",
+    "subject": "⚠️ Unusual activity detected on your account — verify now",
+    "body": "We detected suspicious login from IP 192.168.1.1 in Russia. Your account has been temporarily limited. Click here to verify your identity and restore access: http://secure-boa-verify.xyz/login. Enter your SSN and card number to proceed.",
+    "thread_history": [],
+    "metadata": {"has_attachment": false, "is_vip": false, "pii_fields": ["SSN", "credit_card"]},
+    "ground_truth": {
+      "label": "spam",
+      "action": "none",
+      "reply_keywords": [],
+      "notes": "Phishing attempt — suspicious domain, requests PII, do NOT reply"
+    }
+  },
+  {
+    "id": "email_010",
+    "sender": "maria.gonzalez@enterprise-client.com",
+    "subject": "Contract renewal — need updated pricing by EOD",
+    "body": "Hi, our contract with you expires Jan 15 and procurement needs the renewal quote and updated SLA terms by end of today so we can get approvals in time. This is a $2.4M annual contract so please treat this as priority. Let me know if you need anything from our side.",
+    "thread_history": [
+      {"sender": "maria.gonzalez@enterprise-client.com", "subject": "Contract renewal reminder", "snippet": "Just a heads-up that our contract is coming up for renewal next month..."}
+    ],
+    "metadata": {"has_attachment": false, "is_vip": true, "pii_fields": []},
+    "ground_truth": {
+      "label": "urgent",
+      "action": "escalate",
+      "reply_keywords": ["acknowledged", "sales team", "pricing", "SLA", "EOD", "priority"],
+      "notes": "High-value contract renewal — urgent, escalate to sales/account management"
+    }
+  },
+  {
+    "id": "email_011",
+    "sender": "dev.null@randomguy.net",
+    "subject": "great content!! check out my blog",
+    "body": "Hey!! I just read your website and loved it!! I run a blog about making money online and I think your readers would love it too!! Can we do a guest post exchange?? Visit myblog-money-fast.net for more!! 😎😎",
+    "thread_history": [],
+    "metadata": {"has_attachment": false, "is_vip": false, "pii_fields": []},
+    "ground_truth": {
+      "label": "spam",
+      "action": "none",
+      "reply_keywords": [],
+      "notes": "Unsolicited link-exchange / SEO spam"
+    }
+  },
+  {
+    "id": "email_012",
+    "sender": "tom.baker@supplier.co.uk",
+    "subject": "Delivery update — shipment delayed by 3 days",
+    "body": "Dear team, I wanted to give you a heads-up that the shipment for order #TK-8821 has been delayed by approximately 3 business days due to port congestion at Rotterdam. New estimated delivery is Nov 28. Apologies for the inconvenience. Please let me know if you need any documentation.",
+    "thread_history": [],
+    "metadata": {"has_attachment": false, "is_vip": false, "pii_fields": []},
+    "ground_truth": {
+      "label": "normal",
+      "action": "reply",
+      "reply_keywords": ["thank you", "noted", "delay", "Nov 28", "update", "inform"],
+      "notes": "Routine supplier update — normal priority, acknowledge and inform internal stakeholders"
+    }
+  },
+  {
+    "id": "email_013",
+    "sender": "finance@ourcompany.com",
+    "subject": "Payroll run failed — immediate attention required",
+    "body": "URGENT: The payroll batch for Nov 30 failed due to a mismatch in employee bank account records. 47 employees will not receive their salaries if this is not resolved in the next 2 hours. Please contact finance@ourcompany.com or call ext. 5500 immediately.",
+    "thread_history": [],
+    "metadata": {"has_attachment": false, "is_vip": false, "pii_fields": ["credit_card"]},
+    "ground_truth": {
+      "label": "urgent",
+      "action": "escalate",
+      "reply_keywords": ["escalated", "investigating", "finance team", "2 hours", "payroll", "resolve"],
+      "notes": "Critical internal operations failure — escalate immediately"
+    }
+  },
+  {
+    "id": "email_014",
+    "sender": "customer.feedback@survey.co",
+    "subject": "You have a new 1-star review — respond within 24h",
+    "body": "A customer left a 1-star review on your product: 'Terrible experience. Package arrived damaged and customer service was unhelpful. Never buying again.' We recommend responding within 24 hours to maintain your seller rating. Reply to this email with your response.",
+    "thread_history": [],
+    "metadata": {"has_attachment": false, "is_vip": false, "pii_fields": []},
+    "ground_truth": {
+      "label": "normal",
+      "action": "reply",
+      "reply_keywords": ["apologise", "sorry", "replacement", "refund", "contact", "resolve", "experience"],
+      "notes": "Customer review response — normal priority, empathetic reply required"
+    }
+  },
+  {
+    "id": "email_015",
+    "sender": "it-helpdesk@ourcompany.com",
+    "subject": "Scheduled maintenance: email server downtime Sat 02:00–06:00 UTC",
+    "body": "This is an automated notification. Our email server will undergo scheduled maintenance this Saturday from 02:00 to 06:00 UTC. During this window, sending and receiving emails will be unavailable. No action is required from your side. For urgent matters, please use Slack.",
+    "thread_history": [],
+    "metadata": {"has_attachment": false, "is_vip": false, "pii_fields": []},
+    "ground_truth": {
+      "label": "normal",
+      "action": "reply",
+      "reply_keywords": ["noted", "acknowledged", "maintenance", "Saturday", "Slack"],
+      "notes": "Automated internal IT notice — no action needed, can acknowledge"
+    }
+  }
+]
