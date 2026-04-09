@@ -7,7 +7,7 @@ sdk: docker
 A Gymnasium-compatible and OpenEnv-compliant RL environment for LLM email-triage agents.
 This version uses the **HuggingFace Inference API** for model execution.
 
-## Overview
+##  Overview
 
 **EmailTriageEnv** simulates real-world email triage tasks with three difficulty levels:
 
